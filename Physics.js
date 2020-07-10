@@ -7,13 +7,13 @@ class Physics
     }
     updateVelocity(delta)
     {
-        this.velocity[0] += this.acceleration[0] * delta;
-        this.velocity[1] += this.acceleration[1] * delta;
+        this.velocity.x += this.acceleration.x * delta;
+        this.velocity.y += this.acceleration.y * delta;
     }
     updateAcceleration(deltaX, deltaY)
     {
-        this.acceleration[0] += deltaX;
-        this.acceleration[1] += deltaY;    
+        this.acceleration.x += deltaX;
+        this.acceleration.y += deltaY;    
     }
     // getters
     getVelocity(){return this.velocity};

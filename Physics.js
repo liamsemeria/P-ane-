@@ -1,6 +1,6 @@
 class Physics
 {
-    constructor(velocity, acceleration, x, y, vertices)
+    constructor(velocity, acceleration, pos, vertices)
     {
         this.velocity = velocity;
         this.acceleration = acceleration;

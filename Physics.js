@@ -6,6 +6,7 @@ class Physics
         this.acceleration = acceleration;
 		this.pos = pos;
 		this.vertices = vertices;
+		this.shouldDelete = false;
     }
 	
     updateVelocity(delta)
@@ -41,14 +42,14 @@ class Physics
 	{
 		var proj = createVector(v2.x - v1.x, v2.y - v1.y).normalize();
 		var points = [];
-		var rv = getRealVertices();
+		var rv = this.getRealVertices();
 		for (var i = 0; i < rv.length; i++)
 		{
 			var vec = rv[i];
-			var pproj = proj.mult(vec.dot(proj));
+			var pproj = p5.Vector.mult(proj, vec.dot(proj));
 			points.push(pproj);
 		}
-		points.sort(vecCompare);
+		points.sort(Physics.vecCompare);
 		return [points[0], points[points.length - 1]];
 	}
 	
@@ -57,7 +58,7 @@ class Physics
 		var comp = vecCompare(i1[0], i2[0])
 		if (comp > 0)
 		{
-			return intervalMerge(i2, i1)
+			return Physics.intervalsIntersect(i2, i1)
 		}
 		return vecCompare(i1[1], i2[0]) >= 0;
 	}
@@ -65,31 +66,47 @@ class Physics
 	getRealVertices()
 	{
 		var result = [];
-		for (var i = 0; i < vertices.length; i++)
+		for (var i = 0; i < this.vertices.length; i++)
 		{
-			result.push(p5.Vector.add(vertices[i] + pos));
+			result.push(p5.Vector.add(this.vertices[i]. this.pos));
 		}
 		return result;
 	}
     
     collidingWith(other)
     {
-		var rv = getRealVertices();
+		var rv = this.getRealVertices();
 		var otherrv = other.getRealVertices();
 		
 		for (var i = 0; i < rv.length; i++)
 		{
 			var v1 = rv[i];
 			var v2 = rv[(i + 1) % rv.length];
-			var inte = squash(v1, v2);
+			var inte = this.squash(v1, v2);
 			var otherInte = other.squash(v1, v2);
-			if (intervalsIntersect(inte, otherInte))
+			if (Physics.intervalsIntersect(inte, otherInte))
 			{
 				return true;
 			}
 		}
 		return false;
     }
+	
+	updatePosition(deltaTime)
+	{
+		this.pos = p5.Vector.add(this.pos, p5.Vector.mult(this.velocity, deltaTime));
+	}
+	
+	updateMovement(deltaTime)
+	{
+		this.updatePosition(deltaTime);
+		this.updateVelocity(deltaTime);
+	}
+	
+	update(deltaTime)
+	{
+		this.updateMovement(deltaTime);
+	}
     
     // getters
     getVelocity(){return this.velocity};

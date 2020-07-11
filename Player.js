@@ -2,23 +2,30 @@ class PLayer extends Physics
 {
     constructor(pos,velocity,acceleration, accelerationMagnitude, dashTime)
     {
-        super(velocity,acceleration);
+		/*
+		-87, -51
+	-44,-89
+	43,-89
+	88,-48
+	90,36
+	50,84
+	-47,85
+	-83,54
+		*/
+        super(velocity,acceleration, pos, [createVector(-87, -51), createVector(-44, -89), createVector(43, -89), createVector(88, -48), createVector(90, 36), createVector(50, 84), createVector(-47, 85), createVector(-83, 54)]);
         this.isDead = false;
         this.canDash = false;
         this.Dashing = false;
-        this.pos = pos;
         this.accelerationMagnitude = accelerationMagnitude;
         this.dashTime = dashTime;
     }
     // update player
     update(deltaTime)
     {
+        // update velocity and position
+		super.update(deltaTime);
         // get player input
         this.playerInput();
-        // update velocity and position
-        this.updateVelocity(deltaTime);
-        this.pos.x += this.velocity.x;
-        this.pos.y += this.velocity.y;
     }
     // draw player
     draw()

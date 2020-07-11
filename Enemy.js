@@ -4,6 +4,7 @@ class Enemy extends Physics
 	constructor(pos, target, speed)
 	{
 		super(Enemy.getDirection(pos, target).mult(speed), createVector(0, 0), pos, []);
+		this.destroyOffBounds = true;
 	}
 	
 	static getDirection(pos1, pos2)
@@ -58,7 +59,7 @@ class EnemySpawner
 		// check out of bounds
 		for (var i = 0; i < entities.length; i++)
 		{
-			if (typeof entities[i] == Enemy && entities[i].outOfBounds(this.LENIENCY))
+			if (entities[i].destroyOffBounds && entities[i].outOfBounds(this.LENIENCY))
 			{
 				entities.shouldDelete = true;
 			}
@@ -66,9 +67,7 @@ class EnemySpawner
 		
 		if (millis() - this.lastSpawned > this.rate * 1000)
 		{
-			console.log("hi " + entities.length);
 			entities.push(new Enemy(EnemySpawner.randomPos(this.LENIENCY), player.pos, this.speed));
-			console.log("hi " + entities.length);
 			this.lastSpawned = millis();
 		}
 	}

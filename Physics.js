@@ -7,6 +7,7 @@ class Physics
 		this.pos = pos;
 		this.vertices = vertices;
 		this.shouldDelete = false;
+		this.destroyOffBounds = false;
     }
 	
     updateVelocity(delta)
@@ -40,7 +41,7 @@ class Physics
 	
 	squash(v1, v2)
 	{
-		var proj = createVector(v2.x - v1.x, v2.y - v1.y).normalize();
+		var proj = createVector(v2.y - v1.y, v1.x - v2.x).normalize(); // perpendicular to the vector v2 - v1
 		var points = [];
 		var rv = this.getRealVertices();
 		for (var i = 0; i < rv.length; i++)
@@ -84,12 +85,12 @@ class Physics
 			var v2 = rv[(i + 1) % rv.length];
 			var inte = this.squash(v1, v2);
 			var otherInte = other.squash(v1, v2);
-			if (Physics.intervalsIntersect(inte, otherInte))
+			if (!Physics.intervalsIntersect(inte, otherInte))
 			{
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
     }
 	
 	updatePosition(deltaTime)

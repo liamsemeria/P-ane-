@@ -1,10 +1,12 @@
 
 class Enemy extends Physics
 {
-	constructor(pos, target, speed)
+	constructor(pos, target, speed, player, entities)
 	{
-		super(Enemy.getDirection(pos, target).mult(speed), createVector(0, 0), pos, []);
+		super(Enemy.getDirection(pos, target).mult(speed), createVector(0, 0), pos, [createVector(0, 0), createVector(10, 0), createVector(10, 10), createVector(0, 10)]);
 		this.destroyOffBounds = true;
+		this.player = player;
+		this.entities = entities;
 	}
 	
 	static getDirection(pos1, pos2)
@@ -21,7 +23,23 @@ class Enemy extends Physics
 	
 	outOfBounds(leni)
 	{
-		return this.pos.x < -leni || this.pos.x > WIDTH + leni || this.pos.y < -leni || this.pos.y > HEIGHT + leni;
+		var result = this.pos.x < -leni || this.pos.x > WIDTH + leni || this.pos.y < -leni || this.pos.y > HEIGHT + leni;
+		return result;
+	}
+	
+	update(deltaTime)
+	{
+		this.updateMovement(deltaTime);
+		if (this.collidingWith(player))
+		{
+			// console.log("ahhhhh");
+			player.gettingHit.push(true);
+			player.isDead = true;
+		}
+		else
+		{
+			player.gettingHit.push(false);
+		}
 	}
 }
 
@@ -61,13 +79,13 @@ class EnemySpawner
 		{
 			if (entities[i].destroyOffBounds && entities[i].outOfBounds(this.LENIENCY))
 			{
-				entities.shouldDelete = true;
+				entities[i].shouldDelete = true;
 			}
 		}
 		
 		if (millis() - this.lastSpawned > this.rate * 1000)
 		{
-			entities.push(new Enemy(EnemySpawner.randomPos(this.LENIENCY), player.pos, this.speed));
+			entities.push(new Enemy(EnemySpawner.randomPos(this.LENIENCY), player.pos, this.speed, player, entities));
 			this.lastSpawned = millis();
 		}
 	}

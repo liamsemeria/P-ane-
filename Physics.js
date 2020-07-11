@@ -22,7 +22,7 @@ class Physics
         this.acceleration.y += deltaY;    
     }
 	
-	vecCompare(v1, v2)
+	static vecCompare(v1, v2)
 	{
 		if (v1.x > v2.x)
 		{
@@ -54,14 +54,14 @@ class Physics
 		return [points[0], points[points.length - 1]];
 	}
 	
-	intervalsIntersect(i1, i2)
+	static intervalsIntersect(i1, i2)
 	{
-		var comp = vecCompare(i1[0], i2[0])
+		var comp = Physics.vecCompare(i1[0], i2[0])
 		if (comp > 0)
 		{
 			return Physics.intervalsIntersect(i2, i1)
 		}
-		return vecCompare(i1[1], i2[0]) >= 0;
+		return Physics.vecCompare(i1[1], i2[0]) >= 0;
 	}
 	
 	getRealVertices()
@@ -69,7 +69,9 @@ class Physics
 		var result = [];
 		for (var i = 0; i < this.vertices.length; i++)
 		{
-			result.push(p5.Vector.add(this.vertices[i]. this.pos));
+			var pos = this.pos;
+			var vertex = this.vertices[i];
+			result.push(p5.Vector.add(vertex, pos));
 		}
 		return result;
 	}
@@ -104,7 +106,7 @@ class Physics
 		this.updateVelocity(deltaTime);
 	}
 	
-	update(deltaTime)
+	update(deltaTime, entities)
 	{
 		this.updateMovement(deltaTime);
 	}

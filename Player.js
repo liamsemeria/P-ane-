@@ -2,17 +2,7 @@ class PLayer extends Physics
 {
     constructor(pos,velocity,acceleration, accelerationMagnitude, dashTime)
     {
-		/*
-		-87, -51
-	-44,-89
-	43,-89
-	88,-48
-	90,36
-	50,84
-	-47,85
-	-83,54
-		*/
-        super(velocity,acceleration, pos, [createVector(-87, -51), createVector(-44, -89), createVector(43, -89), createVector(88, -48), createVector(90, 36), createVector(50, 84), createVector(-47, 85), createVector(-83, 54)]);
+        super(velocity,acceleration, pos, [createVector(-11, -6), createVector(-5, -11), createVector(5, -11), createVector(11, -6), createVector(11, 4), createVector(6, 11), createVector(-6, 11), createVector(-10, 7)]);
         this.isDead = false;
         this.canDash = true;
         this.Dashing = false;
@@ -20,6 +10,7 @@ class PLayer extends Physics
         this.dashTime = dashTime;
         this.timePassed = dashTime;
         this.dashDirection = new p5.Vector(0,0,0);
+		this.gettingHit = [];
     }
     // update player
     update(deltaTime)
@@ -56,12 +47,29 @@ class PLayer extends Physics
         }
 
     }
+	
+	gettingHitAtAll()
+	{
+		console.log(this.gettingHit.length);
+		for (var i = 0; i < this.gettingHit.length; i++)
+		{
+			if (this.gettingHit[i])
+			{
+				this.gettingHit = [];
+				return true;
+			}
+		}
+		this.gettingHit = [];
+		return false;
+	}
+	
     // draw player
     draw()
     {
         // change color when dashing
         if (this.Dashing) fill(93,125,252);
-        else fill(0, 0, 0);
+        else if (this.gettingHitAtAll()) fill(200, 20, 20);
+		else fill(0, 0, 0);
         ellipse(this.pos.x, this.pos.y, 25, 25);
     }
 

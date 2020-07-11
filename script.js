@@ -31,6 +31,7 @@ function draw() {
 	{
 		if (entities[i].shouldDelete)
 		{
+			console.log("DELETING");
 			entities.splice(i, 1);
 			i--;
 		}

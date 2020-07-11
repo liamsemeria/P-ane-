@@ -34,7 +34,6 @@ class Enemy extends Physics
 		{
 			// console.log("ahhhhh");
 			player.gettingHit.push(true);
-			player.isDead = true;
 		}
 		else
 		{

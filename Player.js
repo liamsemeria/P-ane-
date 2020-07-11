@@ -27,7 +27,7 @@ class PLayer extends Physics
         // get player input
         this.playerInput();
         // velocity cap
-        if (this.velocity.mag() < 6)
+        if (this.velocity.mag() < 400)
 		{
 			this.updateVelocity(deltaTime);
 		}
@@ -38,8 +38,8 @@ class PLayer extends Physics
             this.velocity.mult(.9);
         }
         // update position
-        this.pos.x += this.velocity.x;
-        this.pos.y += this.velocity.y;
+        this.pos.x += this.velocity.x * deltaTime;
+        this.pos.y += this.velocity.y * deltaTime;
         // dashing
         if (this.Dashing)
         {
@@ -54,6 +54,8 @@ class PLayer extends Physics
                 this.timePassed = this.dashTime;
             }
         }
+        // bounce of the edges of the screen
+        this.bounceOfWalls();
 
     }
     // draw player
@@ -63,6 +65,12 @@ class PLayer extends Physics
         if (this.Dashing) fill(93,125,252);
         else fill(0, 0, 0);
         ellipse(this.pos.x, this.pos.y, 25, 25);
+    }
+
+    bounceOfWalls()
+    {
+        if ((this.pos.x - 12.5 < 0) || (this.pos.x + 12.5 > WIDTH)) this.velocity.x *= -1.5;
+        else if ((this.pos.y - 12.5 < 0) || (this.pos.y + 12.5 > HEIGHT)) this.velocity.y *= -1.5;
     }
 
     playerInput()
@@ -81,7 +89,7 @@ class PLayer extends Physics
     {
         this.Dashing = true;
         this.dashDirection = new p5.Vector(this.pos.x - mouseX, this.pos.y - mouseY,0);
-        this.dashDirection.normalize().mult(-5);
+        this.dashDirection.normalize().mult(-390);
     }
 
 

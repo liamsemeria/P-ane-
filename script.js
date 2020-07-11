@@ -11,7 +11,7 @@ function setup() {
 	createCanvas(WIDTH, HEIGHT);
 	// enemy = new Enemy(createVector(-50, 100), createVector(200, 200), 166);
 	enemySpawner = new EnemySpawner(2, 150);
-    player = new PLayer(new p5.Vector(200,200,0), new p5.Vector(0,0,0), new p5.Vector(0,0,0),1,.2);
+    player = new PLayer(new p5.Vector(200,200,0), new p5.Vector(0,0,0), new p5.Vector(0,0,0),50,.2);
 	entities = [player];
 	timeLastCalled = millis();
 }

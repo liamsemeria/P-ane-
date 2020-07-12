@@ -140,8 +140,10 @@ class EnemySpawner
 				var toPush = createVector(pointX, pointY)
 				points.push(toPush);
 			}
-			var grey = rand(25, 100);
-			return new EnemyPolygon(pos, target, speed, player, entities, points, [grey, grey, grey]);
+			var red = rand(175, 220);
+			var green = rand(175, 220);
+			var blue = rand(175, 220);
+			return new EnemyPolygon(pos, target, speed, player, entities, points, [red, green, blue]);
 		}
 		var points = [];
 		for (var i = 0; i < BIG_CONSTRAINTS.length; i++)

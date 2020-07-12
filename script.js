@@ -6,8 +6,8 @@ var restartButton;
 // var enemy;
 var entities;
 var enemySpawner;
-
-var WIDTH = 600;
+var dashSound;
+var WIDTH = 900;
 var HEIGHT = 600;
 
 function resetGame() {
@@ -20,10 +20,16 @@ function resetGame() {
 	roundTime = 0;
 }
 
+function preload()
+{
+      //soundFormats('wav');
+      //dashSound = loadSound('dash');
+}
+
 function setup() {
 	createCanvas(WIDTH, HEIGHT);
     restartButton = createButton('RESTART');
-    restartButton.position(270,270);
+    restartButton.position(WIDTH/2 -30,HEIGHT/2 -30);
     restartButton.mousePressed(restart);
 	// enemy = new Enemy(createVector(-50, 100), createVector(200, 200), 166);
 	resetGame();
@@ -45,10 +51,10 @@ function draw() {
       // display time and best time
       textSize(14);
       fill(0,0,0);
-      text('TIME',220,20);
-      text(roundTime.toPrecision(3), 260, 20);
-      text('BEST TIME',310,20);
-      text(bestTime.toPrecision(3), 390, 20);
+      text('TIME',WIDTH/2 - 80,20);
+      text(roundTime.toPrecision(3), WIDTH/2 - 40, 20);
+      text('BEST TIME',WIDTH/2 +10,20);
+      text(bestTime.toPrecision(3), WIDTH/2 +90, 20);
 
 	enemySpawner.update(entities, player, roundTime);
 	for (var i = 0; i < entities.length; i++)

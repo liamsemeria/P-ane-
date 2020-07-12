@@ -4,15 +4,16 @@ class PLayer extends Physics
     {
         super(velocity,acceleration, pos, [createVector(-11, -6), createVector(-5, -11), createVector(5, -11), createVector(11, -6), createVector(11, 4), createVector(6, 11), createVector(-6, 11), createVector(-10, 7)]);
         this.isDead = false;
-        this.canDash = false;
         this.Dashing = false;
         this.accelerationMagnitude = accelerationMagnitude;
         this.dashTime = dashTime;
         this.timePassed = dashTime;
+        this.dashCoolDown = .5;
+        this.dashes = 0;
         this.dashDirection = new p5.Vector(0,0,0);
         this.gettingHit = [];
         this.granterpos = new p5.Vector(0,0,0);
-        this.granterSpawnTime = 5;
+        this.granterSpawnTime = 3;
         this.timePassedGranter = -1;
     }
     // update player
@@ -44,8 +45,9 @@ class PLayer extends Physics
             {
                 this.Dashing = false;
                 this.velocity.mult(.2);
-                this.canDash = false;
                 this.timePassed = this.dashTime;
+                // if the mouse is still being held extend the dash (done here to keep invincibility)
+                if (mouseIsPressed && (this.dashes > 0)) this.dash();
             }
         }
         // bounce of the edges of the screen
@@ -55,13 +57,13 @@ class PLayer extends Physics
         {
             this.acceleration = new p5.Vector(0,0,0);
             this.velocity = new p5.Vector(0,0,0);
-            this.canDash = false;
+            this.dashes = 0;
             this.isDead = true;
         }
         // get dash back if near granter
         if (this.pos.dist(this.granterpos) < 35)
         {
-            this.canDash = true;
+            this.dashes++;
             this.granterpos = new p5.Vector(-20,-20,0);
             this.timePassedGranter = 0;
         }
@@ -75,7 +77,6 @@ class PLayer extends Physics
 	
 	gettingHitAtAll()
 	{
-		// console.log(this.gettingHit.length);
 		for (var i = 0; i < this.gettingHit.length; i++)
 		{
 			if (this.gettingHit[i])
@@ -101,9 +102,13 @@ class PLayer extends Physics
         quad(8,-10,3,3,-10,8,16,16);
         rotate(-this.pos.angleBetween(this.acceleration));
         translate(-this.pos.x,-this.pos.y);
-
-        fill(93,125,260);
+        // draw granter
+        fill(93,125,255);
         ellipse(this.granterpos.x, this.granterpos.y, 10, 10);
+        // draw dash amount text
+        textSize(14);
+        fill(0,0,0);
+        text(this.dashes,this.pos.x + 20, this.pos.y + 20);
     }
 
     bounceOfWalls()
@@ -121,14 +126,15 @@ class PLayer extends Physics
         if (keyIsDown(83)) d.y = 1;
         // change acceleration
         if (!this.Dashing && !this.isDead) this.updateAcceleration(d.x * this.accelerationMagnitude,d.y * this.accelerationMagnitude);
-        if (!this.Dashing && mouseIsPressed && this.canDash) this.dash();
+        if (!this.Dashing && mouseIsPressed && (this.dashes > 0)) this.dash();
     }
 
     dash()
     {
+        this.dashes--;
         this.Dashing = true;
         this.dashDirection = new p5.Vector(this.pos.x - mouseX, this.pos.y - mouseY,0);
-        this.dashDirection.normalize().mult(-1000);
+        this.dashDirection.normalize().mult(-1200);
     }
 
     spawnGranter()

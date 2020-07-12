@@ -10,6 +10,8 @@ var dashSound;
 var WIDTH = 900;
 var HEIGHT = 600;
 var dashSound = new Audio("dash.wav");
+var music = new Audio("washing.mp3");
+music.loop = true;
 
 function resetGame() {
 	enemySpawner = new EnemySpawner(2, 150);
@@ -23,8 +25,8 @@ function resetGame() {
 
 function preload()
 {
-      // soundFormats('wav');
-      // dashSound = loadSound('dash');
+    // soundFormats('wav');
+    // dashSound = loadSound('dash.wav');
 }
 
 function setup() {
@@ -37,25 +39,26 @@ function setup() {
 }
 
 function draw() {
+	music.play();
 	var timeNow = millis();
-      var dt = (timeNow - timeLastCalled) / 1000;
-      // display round time if not dead
-      if (!player.getIsDead())roundTime += dt;
-      else 
-      {
-            restartButton.show();
-      }
-      // find high score
-      if (roundTime > bestTime) bestTime = roundTime;
+	var dt = (timeNow - timeLastCalled) / 1000;
+	// display round time if not dead
+	if (!player.getIsDead())roundTime += dt;
+	else 
+	{
+		restartButton.show();
+	}
+	// find high score
+	if (roundTime > bestTime) bestTime = roundTime;
 	timeLastCalled = timeNow;
-      background(220);
-      // display time and best time
-      textSize(14);
-      fill(0,0,0);
-      text('TIME',WIDTH/2 - 80,20);
-      text(roundTime.toPrecision(3), WIDTH/2 - 40, 20);
-      text('BEST TIME',WIDTH/2 +10,20);
-      text(bestTime.toPrecision(3), WIDTH/2 +90, 20);
+	background(220);
+	// display time and best time
+	textSize(14);
+	fill(0,0,0);
+	text('TIME',WIDTH/2 - 80,20);
+	text(roundTime.toPrecision(3), WIDTH/2 - 40, 20);
+	text('BEST TIME',WIDTH/2 +10,20);
+	text(bestTime.toPrecision(3), WIDTH/2 +90, 20);
 
 	enemySpawner.update(entities, player, roundTime);
 	for (var i = 0; i < entities.length; i++)

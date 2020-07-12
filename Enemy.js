@@ -116,7 +116,7 @@ class EnemySpawner
 	
 	getSpeed(roundTime)
 	{
-		return this.startSpeed + roundTime * 5;
+		return this.startSpeed + roundTime * 2;
 	}
 	
 	getRate(roundTime)
@@ -153,8 +153,10 @@ class EnemySpawner
 			var toPush = createVector(pointX, pointY)
 			points.push(toPush);
 		}
-		var grey = rand(25, 100);
-		return new EnemyPolygon(pos, target, 20, player, entities, points, [grey, grey, grey]);
+		var red = rand(25, 100);
+		var green = rand(25, 100);
+		var blue = rand(25, 100);
+		return new EnemyPolygon(pos, target, 20, player, entities, points, [red, green, blue]);
 	}
 	
 	update(entities, player, roundTime)

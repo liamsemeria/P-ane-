@@ -4,7 +4,7 @@ class PLayer extends Physics
     {
         super(velocity,acceleration, pos, [createVector(-11, -6), createVector(-5, -11), createVector(5, -11), createVector(11, -6), createVector(11, 4), createVector(6, 11), createVector(-6, 11), createVector(-10, 7)]);
         this.isDead = false;
-        this.canDash = true;
+        this.canDash = false;
         this.Dashing = false;
         this.accelerationMagnitude = accelerationMagnitude;
         this.dashTime = dashTime;
@@ -75,7 +75,7 @@ class PLayer extends Physics
 	
 	gettingHitAtAll()
 	{
-		console.log(this.gettingHit.length);
+		// console.log(this.gettingHit.length);
 		for (var i = 0; i < this.gettingHit.length; i++)
 		{
 			if (this.gettingHit[i])

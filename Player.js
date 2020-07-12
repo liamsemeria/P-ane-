@@ -16,6 +16,18 @@ class PLayer extends Physics
         this.granterSpawnTime = 3;
         this.timePassedGranter = -1;
     }
+	
+	static getName()
+	{
+		if (sessionStorage.getItem("name"))
+		{
+			return sessionStorage.getItem("name");
+		}
+		var name = Math.floor(random() * 900001 + 100000).toString();
+		sessionStorage.setItem("name", name);
+		return name;
+	}
+	
     // update player
     update(deltaTime)
     {
@@ -53,12 +65,22 @@ class PLayer extends Physics
         // bounce of the edges of the screen
         this.bounceOfWalls();
         // death
-        if (this.gettingHitAtAll() && !this.Dashing)
+        if (this.gettingHitAtAll() && !this.Dashing && !addedScore)
         {
             this.acceleration = new p5.Vector(0,0,0);
             this.velocity = new p5.Vector(0,0,0);
             this.dashes = 0;
             this.isDead = true;
+			db.collection("leaderboard").add({name: PLayer.getName(), score: getScore()}).then(function() {
+				playerScores = [];
+				db.collection("leaderboard").orderBy("score", "desc").limit(10).get().then(function(snapshot) {
+					snapshot.forEach(function(snap) {
+						playerScores.push(snap.data());
+					});
+				});
+				shouldShowLeaderboard = true;
+			});
+			addedScore = true;
         }
         // get dash back if near granter
         if (this.pos.dist(this.granterpos) < 35)
@@ -71,7 +93,7 @@ class PLayer extends Physics
         if ((this.timePassedGranter != -1) && (this.timePassedGranter < 5)) this.timePassedGranter += deltaTime;
         if (this.timePassedGranter > this.granterSpawnTime)
         {
-            this.spawnGranter()
+            this.spawnGranter();
         }
     }
 	

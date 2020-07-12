@@ -12,6 +12,14 @@ var HEIGHT = 600;
 var dashSound = new Audio("dash.wav");
 var music = new Audio("washing.mp3");
 music.loop = true;
+var db = firebase.firestore();
+var addedScore;
+var shouldShowLeaderboard;
+var playerScores;
+
+function getScore() {
+	return roundTime;
+}
 
 function resetGame() {
 	enemySpawner = new EnemySpawner(2, 150);
@@ -21,6 +29,8 @@ function resetGame() {
 	timeLastCalled = millis();
 	player.spawnGranter();
 	roundTime = 0;
+	addedScore = false;
+	shouldShowLeaderboard = false;
 }
 
 function preload()
@@ -36,6 +46,15 @@ function setup() {
     restartButton.mousePressed(restart);
 	// enemy = new Enemy(createVector(-50, 100), createVector(200, 200), 166);
 	resetGame();
+}
+
+function showLeaderboard() {
+	var leadText = "LEADERBOARD\nYou are: " + PLayer.getName() + "\n";
+	for (var i = 0; i < playerScores.length; i++)
+	{
+		leadText += "\n#" + (i + 1) + ": " + playerScores[i].name + ": " + playerScores[i].score.toPrecision(3);
+	}
+	text(leadText, 700, 200);
 }
 
 function draw() {
@@ -59,6 +78,12 @@ function draw() {
 	text(roundTime.toPrecision(3), WIDTH/2 - 40, 20);
 	text('BEST TIME',WIDTH/2 +10,20);
 	text(bestTime.toPrecision(3), WIDTH/2 +90, 20);
+
+	
+	if (shouldShowLeaderboard)
+	{
+		showLeaderboard();
+	}
 
 	enemySpawner.update(entities, player, roundTime);
 	for (var i = 0; i < entities.length; i++)

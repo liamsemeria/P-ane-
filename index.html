@@ -4,7 +4,30 @@
             <title>My gmae</title>
       </head>
       <body>
-            <script src="p5.min.js"></script>
+            <script src="p5.min.js"></script><!-- The core Firebase JS SDK is always required and must be listed first -->
+			<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+
+			<!-- TODO: Add SDKs for Firebase products that you want to use
+				 https://firebase.google.com/docs/web/setup#available-libraries -->
+			<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+			<script>
+			  // Your web app's Firebase configuration
+			  var firebaseConfig = {
+				apiKey: "AIzaSyDNeVveDOcUMtSaZEphw7ljJo_YAkBsc5s",
+				authDomain: "severe-turbulence.firebaseapp.com",
+				databaseURL: "https://severe-turbulence.firebaseio.com",
+				projectId: "severe-turbulence",
+				storageBucket: "severe-turbulence.appspot.com",
+				messagingSenderId: "454335841093",
+				appId: "1:454335841093:web:6d42dfec4e2cb65687f42c",
+				measurementId: "G-LCXH8S8H0M"
+			  };
+			  // Initialize Firebase
+			  firebase.initializeApp(firebaseConfig);
+			  firebase.analytics();
+			</script>
+			<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-firestore.js"></script>
 			<!-- <script src="p5.sound.min.js"></script> -->
             <script src="script.js"></script>
             <script src="Physics.js"></script>

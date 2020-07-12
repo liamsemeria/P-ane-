@@ -28,7 +28,7 @@ class PLayer extends Physics
         else
         {
             // if cap is reached reduce acceleration and velocity
-            this.acceleration.mult(.45);
+            this.acceleration.mult(.4);
             this.velocity.mult(.9);
         }
         // update position
@@ -95,7 +95,13 @@ class PLayer extends Physics
         if (this.Dashing) fill(93,125,252);
         else if (this.isDead) fill(200, 20, 20);
 		else fill(0, 0, 0);
-        ellipse(this.pos.x, this.pos.y, 25, 25);
+        // makes a "cursor" shape rotated for the acceleration
+        translate(this.pos.x,this.pos.y);
+        rotate(this.pos.angleBetween(this.acceleration));
+        quad(8,-10,3,3,-10,8,16,16);
+        rotate(-this.pos.angleBetween(this.acceleration));
+        translate(-this.pos.x,-this.pos.y);
+
         fill(93,125,260);
         ellipse(this.granterpos.x, this.granterpos.y, 10, 10);
     }
@@ -127,7 +133,7 @@ class PLayer extends Physics
 
     spawnGranter()
     {
-        this.granterpos = new p5.Vector(10 + random()*(WIDTH-20),10 + random()*(HEIGHT-20),0);
+        this.granterpos = new p5.Vector(20 + random()*(WIDTH-20),20 + random()*(HEIGHT-20),0);
         this.timePassedGranter = -1;
     }
 

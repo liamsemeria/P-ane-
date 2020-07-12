@@ -135,6 +135,7 @@ class PLayer extends Physics
         this.Dashing = true;
         this.dashDirection = new p5.Vector(this.pos.x - mouseX, this.pos.y - mouseY,0);
         this.dashDirection.normalize().mult(-1200);
+		dashSound.play();
     }
 
     spawnGranter()

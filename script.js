@@ -9,6 +9,7 @@ var enemySpawner;
 var dashSound;
 var WIDTH = 900;
 var HEIGHT = 600;
+var dashSound = new Audio("dash.wav");
 
 function resetGame() {
 	enemySpawner = new EnemySpawner(2, 150);
@@ -22,8 +23,8 @@ function resetGame() {
 
 function preload()
 {
-      //soundFormats('wav');
-      //dashSound = loadSound('dash');
+      // soundFormats('wav');
+      // dashSound = loadSound('dash');
 }
 
 function setup() {
